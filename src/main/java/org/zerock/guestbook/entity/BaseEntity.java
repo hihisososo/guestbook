@@ -10,8 +10,8 @@ import javax.persistence.EntityListeners;
 import javax.persistence.MappedSuperclass;
 import java.time.LocalDateTime;
 
-@MappedSuperclass
-@EntityListeners(value = { AuditingEntityListener.class })
+@MappedSuperclass // 테이블을 생성하지 않는다
+@EntityListeners(value = { AuditingEntityListener.class }) // 해당 클래스를 상속받은 Entity 의 생성/변경 감지한 후 적절한 값을 알아서 넣어주겠다
 @Getter
 abstract class BaseEntity {
 

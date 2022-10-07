@@ -5,7 +5,7 @@ import lombok.*;
 import javax.persistence.*;
 
 
-@Entity
+@Entity // 데이터베이스의 테이블과 1:1 로 매칭되는 클래스
 @Getter
 @Builder
 @AllArgsConstructor
@@ -14,7 +14,7 @@ import javax.persistence.*;
 public class Guestbook extends BaseEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // ID 자동 생성(DB에 맡김)
     private Long gno;
 
     @Column(length = 100, nullable = false)

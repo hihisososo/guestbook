@@ -19,44 +19,40 @@ import org.zerock.guestbook.service.GuestbookService;
 @RequiredArgsConstructor
 public class GuestBookController {
 
-    private final GuestbookService service; //final로 선언
-
+    private final GuestbookService service;
     @GetMapping("/")
     public String index() {
-
         return "redirect:/guestbook/list";
     }
 
-
     @GetMapping("/list")
-    public void list(PageRequestDTO pageRequestDTO, Model model){
+    public String list(PageRequestDTO pageRequestDTO, Model model){
 
         log.info("list............." + pageRequestDTO);
 
         model.addAttribute("result", service.getList(pageRequestDTO));
-
+        model.addAttribute("keyword", pageRequestDTO.getKeyword());
+        model.addAttribute("type", pageRequestDTO.getType());
+        return "/guestbook/list";
     }
 
     @GetMapping("/register")
-    public void register(){
+    public String register(){
         log.info("regiser get...");
+        return "/guestbook/register";
     }
 
     @PostMapping("/register")
-    public String registerPost(GuestbookDTO dto, RedirectAttributes redirectAttributes){
+    public String registerPost(GuestbookDTO dto){
 
         log.info("dto..." + dto);
 
-        //새로 추가된 엔티티의 번호
-        Long gno = service.register(dto);
-
-        redirectAttributes.addFlashAttribute("msg", gno);
-
+        service.register(dto);
         return "redirect:/guestbook/list";
     }
 
     @GetMapping({"/read", "/modify"})
-    public void read(long gno, @ModelAttribute("requestDTO") PageRequestDTO requestDTO, Model model ){
+    public void read(long gno, Model model ){
 
         log.info("gno: " + gno);
 
@@ -67,15 +63,10 @@ public class GuestBookController {
     }
 
     @PostMapping("/remove")
-    public String remove(long gno, RedirectAttributes redirectAttributes){
-
-
+    public String remove(long gno){
         log.info("gno: " + gno);
 
         service.remove(gno);
-
-        redirectAttributes.addFlashAttribute("msg", gno);
-
         return "redirect:/guestbook/list";
 
     }
@@ -94,9 +85,6 @@ public class GuestBookController {
         redirectAttributes.addAttribute("page",requestDTO.getPage());
         redirectAttributes.addAttribute("type",requestDTO.getType());
         redirectAttributes.addAttribute("keyword",requestDTO.getKeyword());
-
-        redirectAttributes.addAttribute("gno",dto.getGno());
-
 
         return "redirect:/guestbook/read";
 

@@ -43,8 +43,8 @@ public class GuestbookServiceImpl implements GuestbookService {
     @Override
     public PageResultDTO<GuestbookDTO, Guestbook> getList(PageRequestDTO requestDTO) {
 
-        //정렬은 gno 내림차순이고, PageRequestDTO 내부의 페이지 번호와 출력 갯수를 통해 Pageable 객체를 생성한다
-        Pageable pageable = requestDTO.getPageable(Sort.by("gno").descending());
+        //정렬조건에 따라, PageRequestDTO 내부의 페이지 번호와 출력 갯수를 통해 Pageable 객체를 생성한다
+        Pageable pageable = requestDTO.getPageable();
 
         //requestDTO 의 파라미터와 QueryDSL 을 통해, 검색 조건을 생성한다
         BooleanBuilder booleanBuilder = getSearch(requestDTO);
